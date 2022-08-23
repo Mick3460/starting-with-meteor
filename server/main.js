@@ -1,4 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { ContactsCollection } from "../imports/api/ContactsCollection.js";
+import "../imports/api/ContactsCollection.js";
+import "../imports/api/ContactMethods.js";
 
-Meteor.startup(() => {});
+Meteor.startup(() => {
+
+});

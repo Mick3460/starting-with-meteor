@@ -1,24 +1,56 @@
 import React, { useState } from "react";
-import { ContactsCollection } from "../api/ContactsCollection";
+import { FormLabel } from "@mui/material";
+import { Meteor } from "meteor/meteor";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { ErrorAlert } from "./components/ErrorAlert";
+import { SuccessAlert } from "./components/SuccessAlert";
 
 export const ContactForm = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
+	const [errorMsg, setErrorMsg] = useState("");
+	const [success, setSuccess] = useState("");
 
+	const showError = (message) => {
+		setErrorMsg(message);
+		console.log(errorMsg, "i showerror");
+		setTimeout(() => {
+			setErrorMsg("");
+		}, 2000);
+	};
+
+	const showSuccess = () => {
+		setSuccess("Contact saved");
+		setTimeout(() => {
+			setSuccess("");
+		}, 2000);
+	};
 	function saveContact() {
-        
-        const contact = { name, email, imageUrl }
-        ContactsCollection.insert(contact)
-
-		setName("");
-		setEmail("");
-		setImageUrl("");
+		Meteor.call(
+			"contacts.insert",
+			{ name, email, imageUrl },
+			(errorResponse) => {
+				if (errorResponse) {
+					showError(errorResponse.error);
+					console.log(errorResponse.error, "I formen");
+				} else {
+					setName("");
+					setEmail("");
+					setImageUrl("");
+					showSuccess();
+				}
+			}
+		);
 	}
 
 	return (
 		<form>
+			{errorMsg && <ErrorAlert message={errorMsg} />}
+			{success && <SuccessAlert message={success} />}
 			<div>
+				<FormLabel color="primary">Test</FormLabel>
 				<label htmlFor="name">Name</label>
 				<input
 					value={name}
@@ -46,7 +78,9 @@ export const ContactForm = () => {
 				/>
 			</div>
 			<div>
-				<button type="button" onClick={saveContact}>Save Contact</button>
+				<button type="button" onClick={saveContact}>
+					Save Contact
+				</button>
 			</div>
 		</form>
 	);

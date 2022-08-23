@@ -1,14 +1,41 @@
-import React from 'react';
-import {ContactForm} from './ContactForm';
-import { ContactList } from './ContactList';
 
+import { PhotoCamera } from "@mui/icons-material";
+import {
+	Typography,
+	AppBar,
+	Card,
+	CardAction,
+	CardContent,
+	CardMedia,
+	CssBaseline,
+	Grid,
+	Toolbar,
+	Container,
+	Button,
+} from "@mui/material";
+import React from "react";
+import { ContactForm } from "./ContactForm";
+import { ContactList } from "./ContactList";
+import { Header } from "./Header";
 
-export const App = () => (
-  
-  <div>
-    <h1>It's over Anakin</h1>
-    <ContactForm />
-    <ContactList name="lol"/>
+export const App = () => {
+	return (
+		<>
+			<CssBaseline />
+      <Header />
+			<Typography variant="h2">You underestimate my power</Typography>
 
-  </div>
-);
+			<main>
+				<div>
+          <Container maxWidth="sm">
+					  <ContactForm />
+          </Container>
+
+          <Container maxWidth="sm">
+					  <ContactList />
+          </Container>
+				</div>
+			</main>
+		</>
+	);
+};
